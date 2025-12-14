@@ -12,4 +12,4 @@
 #   Use the `include` directive to split a large file into multiple smaller files
 #   https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#installing-multiple-roles-from-multiple-files
 collections:
-- fedora.linux_system_roles
+  - fedora.linux_system_roles
