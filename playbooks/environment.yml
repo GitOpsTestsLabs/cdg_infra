@@ -1,0 +1,41 @@
+---
+- hosts: all
+  tasks:
+  - name: Building Repo File
+    copy:
+      dest: /etc/yum.repos.d/rpms.repo
+      content: |
+         [baseos]
+         name=CentOS Stream $releasever - BaseOS
+         metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-$stream&arch=$basearch&protocol=https,http
+         gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+         gpgcheck=0
+         repo_gpgcheck=0
+         metadata_expire=6h
+         countme=1
+         enabled=1
+         [appstream]
+         name=CentOS Stream $releasever - AppStream
+         metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-$stream&arch=$basearch&protocol=https,http
+         gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+         gpgcheck=0
+         repo_gpgcheck=0
+         metadata_expire=6h
+         countme=1
+         enabled=1
+      force: yes
+  - name: Rebuild RPM Database
+    command: "sudo rpm --rebuilddb"
+    become: true
+- hosts: all
+  roles:
+    - fedora.linux_system_roles.kernel_settings
+    - fedora.linux_system_roles.crypto_policies
+    - fedora.linux_system_roles.network
+    - fedora.linux_system_roles.selinux
+    - fedora.linux_system_roles.firewall
+    - fedora.linux_system_roles.timesync
+    - fedora.linux_system_roles.kdump
+    - fedora.linux_system_roles.tlog
+    - fedora.linux_system_roles.sshd
+    - fedora.linux_system_roles.vpn

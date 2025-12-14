@@ -1,0 +1,5 @@
+collections:
+- name: fedora.linux_system_roles
+roles:
+- name: geerlingguy.apache
+- name: geerlingguy.php

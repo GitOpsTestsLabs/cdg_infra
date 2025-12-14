@@ -1,0 +1,41 @@
+---
+all:
+   hosts:
+     workstation199.lab.example.com:
+       ansible_host: 192.168.56.149
+       ansible_ssh_common_args: -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+       ansible_user: vagrant
+       ansible_become: true
+     servera199.lab.example.com:
+       ansible_host: 192.168.56.150
+       ansible_ssh_common_args: -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+       ansible_user: vagrant
+       ansible_become: true
+     serverb199.lab.example.com:
+       ansible_host: 192.168.56.151
+       ansible_ssh_common_args: -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+       ansible_user: vagrant
+       ansible_become: true 
+   vars:
+     metrics_server: servera199.lab.example.com
+     logging_server: servera199.lab.example.com
+     logging_domain: example.com
+   children:
+     web_servers:
+       hosts:
+         serverb199.lab.example.com:
+     logging_servers:
+       hosts:
+         servera199.lab.example.com:
+     metrics_servers:
+       hosts:
+         servera199.lab.example.com:
+       vars:
+         metrics_monitored_hosts:
+         - serverb199.lab.example.com
+         - workstation199.lab.example.com
+     nfs_servers:
+       hosts:
+         servera199.lab.example.com:
+       vars:
+         storage_data_volume: /dev/vdb 

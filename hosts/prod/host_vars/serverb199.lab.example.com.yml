@@ -1,0 +1,14 @@
+---
+network_connections:
+ - name: eth2
+   type: ethernet
+   state: up
+   ip:
+     address:
+       - "192.168.56.186/24"      
+ - name: eth3
+   type: ethernet
+   ip:
+     address:
+       - "192.168.56.185/24"  
+   state: up

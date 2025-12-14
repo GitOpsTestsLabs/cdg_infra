@@ -1,0 +1,62 @@
+---
+firewall:
+ - port: 44321/tcp
+   state: enabled
+ - port: 514/tcp
+   state: enabled
+ - port: 20514/tcp
+   state: enabled
+ - service: http
+   state: enabled
+ - service: https
+   state: enabled     
+
+apache_listen_ip: "*"
+apache_listen_port: 80
+apache_listen_port_ssl: 443
+
+php_user:  "{{apache_user | default(apache) }}"
+php_group: "{{php_user    | default(apache) }}"
+php_install_from_source: false
+php_enable_webserver: true
+php_webserver_daemon: "httpd"
+php_packages_state: "present"
+php_install_recommends: true
+php_executable: "php"
+php_packages:
+   - php
+   - php-cli
+   - php-common
+   - php-devel
+   - php-gd
+   - php-mbstring
+   - php-pdo
+   - php-pecl-apcu
+   - php-xml
+   - php-curl 
+   - php-ctype
+   - php-dom
+   - php-gd
+   - php-json
+   - php-mbstring
+   - php-openssl
+   - php-session
+   - php-simplexml
+   - php-xml
+   - php-zip
+
+php_memory_limit: "128M"
+php_max_execution_time: "90"
+php_upload_max_filesize: "256M"
+
+php_opcache_zend_extension: "opcache.so"
+php_opcache_enable: "1"
+php_opcache_enable_cli: "0"
+php_opcache_memory_consumption: "96"
+php_opcache_interned_strings_buffer: "16"
+php_opcache_max_accelerated_files: "4096"
+php_opcache_max_wasted_percentage: "5"
+php_opcache_validate_timestamps: "1"
+php_opcache_revalidate_path: "0"
+php_opcache_revalidate_freq: "2"
+php_opcache_max_file_size: "0"
