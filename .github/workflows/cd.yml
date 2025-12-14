@@ -1,0 +1,43 @@
+---
+name: CD - Continuous Delivery
+on: 
+ workflow_dispatch:
+   inputs:
+      name:
+        description: CD Manual Testing
+        default: Continous Delivery
+        required: true
+        type: string
+jobs:
+ deploy:
+   name: Apply Configurations
+   runs-on: ubuntu-latest
+   environment: production
+   steps:
+    - name: Load Source Code to Container
+      uses: actions/checkout@main     
+    - name: Set up SSH
+      run: |
+         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+         chmod 600 private_key.pem
+    - name: Install Ansible
+      shell: bash
+      run: |
+          sudo apt update
+          sudo apt install -y ansible 
+    - name: Install Collections
+      shell: bash
+      run: ansible-galaxy collection install --upgrade -r collections/requirements.yml 
+    - name: Install Roles
+      shell: bash
+      run: ansible-galaxy role       install           -r roles/requirements.yml            
+    - name: Run Playbook
+      shell: bash
+      env:
+         ANSIBLE_CONFIG: ./ansible.cfg
+         ANSIBLE_HOST_KEY_CHECKING: False
+      run: |
+        cat ansible.cfg
+        echo =================================
+        ansible-config  init -c ansible.cfg
+        ansible-playbook playbooks/main.yml --private-key private_key.pem  
